@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPick Reviews – Trusted Product Reviews</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf9f6;
+    --surface: #ffffff;
+    --surface2: #f3f1ec;
+    --text: #1a1814;
+    --text2: #5a5650;
+    --text3: #9a9590;
+    --accent: #c8441a;
+    --accent2: #e8621e;
+    --gold: #c9a84c;
+    --border: #e4e0d8;
+    --shadow: 0 2px 20px rgba(0,0,0,0.07);
+    --radius: 12px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between; height: 68px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon {
+    width: 36px; height: 36px; background: var(--accent); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #fff;
+  }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); }
+  .logo-text span { color: var(--accent); }
+  nav { display: flex; gap: 6px; }
+  nav button {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    color: var(--text2); padding: 8px 14px; border-radius: 8px; transition: all 0.2s;
+  }
+  nav button:hover, nav button.active { background: var(--surface2); color: var(--text); }
+  .admin-btn {
+    background: var(--accent) !important; color: #fff !important;
+    padding: 8px 18px !important; border-radius: 8px !important;
+  }
+  .admin-btn:hover { background: var(--accent2) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #1a1814 0%, #2d2820 60%, #3d2010 100%);
+    padding: 80px 24px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-tag {
+    display: inline-block; background: rgba(200,68,26,0.2); color: #f09070;
+    font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(200,68,26,0.3);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 16px;
+  }
+  .hero h1 em { color: var(--gold); font-style: normal; }
+  .hero p { color: rgba(255,255,255,0.6); font-size: 17px; max-width: 540px; margin: 0 auto 32px; }
+  .hero-cats {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  }
+  .hero-cats button {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.8); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; padding: 8px 18px; border-radius: 20px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .hero-cats button:hover, .hero-cats button.active {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+
+  /* ── MAIN ── */
+  .main { max-width: 1200px; margin: 0 auto; padding: 48px 24px; }
+
+  /* ── SECTION HEADER ── */
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
+  .section-header span { font-size: 13px; color: var(--text3); }
+
+  /* ── FEATURED CARD ── */
+  .featured-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 56px; }
+  @media(max-width:700px){ .featured-grid { grid-template-columns: 1fr; } }
+
+  /* ── ARTICLE CARDS ── */
+  #articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+
+  .card-img {
+    width: 100%; aspect-ratio: 16/9; object-fit: cover;
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px; color: var(--text3);
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+  .card-cat {
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600;
+    color: var(--text); line-height: 1.3; margin-bottom: 10px;
+  }
+  .card-excerpt { font-size: 14px; color: var(--text2); line-height: 1.6; flex: 1; margin-bottom: 16px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+  .card-date { font-size: 12px; color: var(--text3); }
+
+  .btn-amazon {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent); color: #fff; text-decoration: none;
+    font-size: 13px; font-weight: 600; padding: 8px 16px;
+    border-radius: 8px; transition: background 0.2s;
+  }
+  .btn-amazon:hover { background: var(--accent2); }
+  .btn-read {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface2); color: var(--text); text-decoration: none;
+    font-size: 13px; font-weight: 500; padding: 8px 16px;
+    border-radius: 8px; border: 1px solid var(--border); transition: background 0.2s;
+    cursor: pointer; border: none;
+  }
+  .btn-read:hover { background: var(--border); }
+
+  /* ── EMPTY STATE ── */
+  .empty {
+    text-align: center; padding: 80px 24px; color: var(--text3);
+    grid-column: 1 / -1;
+  }
+  .empty .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty p { font-size: 16px; }
+
+  /* ── ARTICLE MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); z-index: 500;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 16px;
+    width: 100%; max-width: 760px; max-height: 90vh;
+    overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .modal-img { width: 100%; aspect-ratio: 16/7; object-fit: cover; background: var(--surface2); }
+  .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+  .modal-content { padding: 32px; }
+  .modal-cat { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; margin-bottom: 16px; line-height: 1.25; }
+  .modal-body { font-size: 16px; color: var(--text2); line-height: 1.8; white-space: pre-wrap; margin-bottom: 28px; }
+  .modal-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .modal-close {
+    position: sticky; top: 12px; float: right; margin: 12px 12px 0 0;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(0,0,0,0.1); border: none; cursor: pointer;
+    font-size: 18px; display: flex; align-items: center; justify-content: center;
+    color: var(--text2); transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.2); }
+
+  /* ── ADMIN PANEL ── */
+  #admin-panel {
+    display: none; max-width: 1200px; margin: 0 auto; padding: 48px 24px;
+  }
+  .admin-header { margin-bottom: 36px; }
+  .admin-header h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .admin-header p { color: var(--text2); font-size: 15px; }
+
+  .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  @media(max-width:760px){ .admin-grid { grid-template-columns: 1fr; } }
+
+  .admin-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px;
+    box-shadow: var(--shadow);
+  }
+  .admin-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--bg); transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--accent);
+  }
+  .form-group textarea { resize: vertical; min-height: 140px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .btn-submit {
+    width: 100%; padding: 12px; background: var(--accent); color: #fff;
+    border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+    margin-top: 4px;
+  }
+  .btn-submit:hover { background: var(--accent2); }
+
+  /* article list in admin */
+  .admin-articles { margin-top: 24px; }
+  .admin-article-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid var(--border); gap: 12px;
+  }
+  .admin-article-item:last-child { border-bottom: none; }
+  .aai-info { flex: 1; min-width: 0; }
+  .aai-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .aai-cat { font-size: 12px; color: var(--text3); }
+  .aai-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-del {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 12px; color: var(--text3); padding: 4px 10px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-del:hover { background: #fff0f0; border-color: #e55; color: #c33; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    background: #1a1814; color: #fff; padding: 12px 20px;
+    border-radius: 10px; font-size: 14px; font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1a1814; color: rgba(255,255,255,0.5);
+    padding: 32px 24px; text-align: center; font-size: 13px; margin-top: 80px;
+  }
+  footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+  .aff-disclaimer {
+    max-width: 700px; margin: 0 auto 16px;
+    background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 16px;
+    font-size: 12px; line-height: 1.6;
+  }
+
+  /* Category badges */
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px; margin-right: 4px;
+  }
+  .badge-electronics { background: #e8f0fe; color: #1a56c4; }
+  .badge-home { background: #fef3c7; color: #92400e; }
+  .badge-fashion { background: #fce7f3; color: #9d174d; }
+  .badge-books { background: #d1fae5; color: #065f46; }
+  .badge-beauty { background: #fdf2f8; color: #be185d; }
+  .badge-household { background: #f0fdf4; color: #166534; }
+  .badge-other { background: #f3f4f6; color: #374151; }
+
+  .star-rating { color: var(--gold); font-size: 13px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">✦</div>
+      <span class="logo-text">Smart<span>Pick</span></span>
+    </a>
+    <nav>
+      <button class="active" onclick="showSection('home')">Home</button>
+      <button onclick="showSection('home'); filterCat('Electronics')">Electronics</button>
+      <button onclick="showSection('home'); filterCat('Home & Kitchen')">Home</button>
+      <button onclick="showSection('home'); filterCat('Fashion')">Fashion</button>
+      <button onclick="showSection('home'); filterCat('Beauty')">Beauty</button>
+      <button class="admin-btn" onclick="showSection('admin')">+ Admin</button>
+    </nav>
+  </div>
+</header>
+
+<!-- HOME PAGE -->
+<div id="home-page">
+  <section class="hero">
+    <div class="hero-tag">✦ Trusted Amazon Reviews</div>
+    <h1>Find Products That<br><em>Actually Work</em></h1>
+    <p>Honest, in-depth reviews across electronics, home goods, fashion, beauty & more. Every pick linked directly to Amazon.</p>
+    <div class="hero-cats">
+      <button class="active" onclick="filterCat('')">All</button>
+      <button onclick="filterCat('Electronics')">📱 Electronics</button>
+      <button onclick="filterCat('Home & Kitchen')">🏠 Home & Kitchen</button>
+      <button onclick="filterCat('Fashion')">👗 Fashion</button>
+      <button onclick="filterCat('Beauty')">💄 Beauty & Cosmetics</button>
+      <button onclick="filterCat('Books')">📚 Books</button>
+      <button onclick="filterCat('Household')">🧹 Household</button>
+    </div>
+  </section>
+
+  <div class="main">
+    <div class="section-header">
+      <h2 id="section-title">Latest Reviews</h2>
+      <span id="article-count"></span>
+    </div>
+    <div id="articles-grid">
+      <!-- Cards rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-header">
+    <h2>✦ Admin Panel</h2>
+    <p>Add new articles, blog posts, and product reviews to your site.</p>
+  </div>
+  <div class="admin-grid">
+    <!-- ADD ARTICLE FORM -->
+    <div class="admin-card">
+      <h3>📝 Add New Article / Review</h3>
+      <div class="form-group">
+        <label>Article Title *</label>
+        <input type="text" id="f-title" placeholder="e.g. Best Budget Earbuds 2024">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="f-cat">
+            <option value="">Select category</option>
+            <option>Electronics</option>
+            <option>Home & Kitchen</option>
+            <option>Fashion</option>
+            <option>Beauty</option>
+            <option>Books</option>
+            <option>Household</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Star Rating</label>
+          <select id="f-rating">
+            <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+            <option value="4">⭐⭐⭐⭐ (4/5)</option>
+            <option value="3">⭐⭐⭐ (3/5)</option>
+            <option value="2">⭐⭐ (2/5)</option>
+            <option value="1">⭐ (1/5)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Short Excerpt (shown on card)</label>
+        <input type="text" id="f-excerpt" placeholder="One-line summary of the review…">
+      </div>
+      <div class="form-group">
+        <label>Full Article / Blog Content *</label>
+        <textarea id="f-body" placeholder="Write your full review here. Include pros, cons, who it's for, etc."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Product Image URL</label>
+        <input type="url" id="f-img" placeholder="https://... (paste any image URL)">
+      </div>
+      <div class="form-group">
+        <label>Amazon Affiliate Link *</label>
+        <input type="url" id="f-link" placeholder="https://www.amazon.in/dp/...?tag=yourtag-21">
+      </div>
+      <div class="form-group">
+        <label>Amazon Button Label</label>
+        <input type="text" id="f-btn" placeholder="e.g. Buy on Amazon ↗" value="Buy on Amazon ↗">
+      </div>
+      <button class="btn-submit" onclick="addArticle()">Publish Article</button>
+    </div>
+
+    <!-- MANAGE ARTICLES -->
+    <div class="admin-card">
+      <h3>📋 Manage Articles (<span id="admin-count">0</span>)</h3>
+      <div class="admin-articles" id="admin-list">
+        <p style="color:var(--text3);font-size:14px;text-align:center;padding:32px 0;">No articles yet. Add your first review!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ARTICLE MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-img" id="modal-img"></div>
+    <div class="modal-content">
+      <div class="modal-cat" id="modal-cat"></div>
+      <div class="star-rating" id="modal-stars"></div>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-actions">
+        <a id="modal-amazon-link" class="btn-amazon" href="#" target="_blank" rel="noopener sponsored">🛒 Buy on Amazon</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="aff-disclaimer">
+    <strong style="color:rgba(255,255,255,0.8)">Affiliate Disclosure:</strong> SmartPick Reviews participates in the Amazon Associates programme. When you buy through our links, we may earn a small commission at no extra cost to you. This helps keep the site running.
+  </div>
+  <p>© 2024 SmartPick Reviews · All reviews are independent and honest</p>
+</footer>
+
+<script>
+// ── DATA STORE ──
+const STORAGE_KEY = 'smartpick_articles_v2';
+
+function loadArticles() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || getDefaultArticles();
+  } catch { return getDefaultArticles(); }
+}
+
+function saveArticles(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+function getDefaultArticles() {
+  return [
+    {
+      id: 1, title: "Boat Airdopes 141 Review – Best Budget TWS Earbuds?",
+      cat: "Electronics", rating: 4,
+      excerpt: "Punchy bass, 42hr total battery, and surprisingly clear calls under ₹1,500.",
+      body: `The Boat Airdopes 141 has been one of India's best-selling true wireless earbuds for good reason. At just under ₹1,500, they deliver a surprising punch.\n\nSOUND QUALITY\nThe bass is boosted — great for pop, Bollywood, and hip-hop. Treble is decent though slightly recessed. Don't expect audiophile quality, but for the price, it's hard to beat.\n\nBATTERY LIFE\nEach bud gives about 6 hours, with the case adding 36 more hours. Total 42 hours is excellent for the price segment.\n\nFIT & COMFORT\nThe half-in-ear design won't suit everyone — they can feel loose during exercise. For casual listening, perfectly comfortable.\n\nCONNECTIVITY\nBluetooth 5.0 means fast pairing and stable connection up to about 10 metres.\n\nVERDICT\nIf you want solid everyday earbuds on a tight budget, the Airdopes 141 is a very strong pick. Highly recommended for students and daily commuters.`,
+      img: "https://images-na.ssl-images-amazon.com/images/I/51pEECqkwTL._SL1500_.jpg",
+      link: "https://www.amazon.in/dp/B08CF7N7TQ",
+      btnLabel: "Buy on Amazon ↗",
+      date: "Dec 10, 2024"
+    },
+    {
+      id: 2, title: "Milton Thermosteel Flip Lid Flask – 6 Month Review",
+      cat: "Home & Kitchen", rating: 5,
+      excerpt: "Keeps liquids hot for 24 hours and cold for 48. An everyday essential.",
+      body: `I've been using the Milton Thermosteel Flip Lid Flask for over 6 months now, and it has earned a permanent spot in my bag.\n\nHEAT RETENTION\nFills the brief perfectly — boiling tea stays drinkable for a full 6–7 hours. Ice water stays cold for over 24 hours in Indian summer conditions.\n\nBUILD QUALITY\nDouble-wall stainless steel construction. No plastic taste, no condensation on the outside. The flip lid clicks firmly and doesn't leak even in a bag.\n\nSIZES AVAILABLE\nComes in 160ml, 300ml, 500ml, and 1000ml. The 500ml is the sweet spot for most users.\n\nCLEANING\nWide mouth makes cleaning easy. Not dishwasher safe but a bottle brush handles it in seconds.\n\nVERDICT\nAt the price, this is one of the best value-for-money purchases I've made. Beats overpriced imported brands for everyday use.`,
+      img: "https://images-na.ssl-images-amazon.com/images/I/51%2BQ9dHRRYL._SL1000_.jpg",
+      link: "https://www.amazon.in/dp/B07DF8PMFX",
+      btnLabel: "Buy on Amazon ↗",
+      date: "Dec 5, 2024"
+    },
+    {
+      id: 3, title: "Lakme Absolute Matte Revolution Lipstick – Full Review",
+      cat: "Beauty", rating: 4,
+      excerpt: "Rich pigment, comfortable matte finish, 12-hour wear. Worth every rupee.",
+      body: `The Lakme Absolute Matte Revolution Lipstick has quickly become a staple in my makeup kit. Here's why.\n\nPIGMENTATION\nExcellent — one swipe gives near-full coverage. The reds and nudes are especially vibrant.\n\nFINISH\nTrue matte but not drying. A light moisturising feel despite the flat finish, which is rare at this price point.\n\nLASTING POWER\nWith a lip primer: easily 8–10 hours. Without primer: around 5–6 hours with light eating.\n\nSHADE RANGE\nOver 30 shades available, from classic red to dusty rose to bold plums. Good variety for Indian skin tones.\n\nPACKAGING\nSleek bullet shape, sturdy cap, good enough for a handbag.\n\nVERDICT\nFor under ₹700, this is premium-quality performance. One of the best Indian drugstore lipsticks available.`,
+      img: "https://images-na.ssl-images-amazon.com/images/I/51Y5jrIDSfL._SL1500_.jpg",
+      link: "https://www.amazon.in/dp/B07BDHC8LQ",
+      btnLabel: "Buy on Amazon ↗",
+      date: "Nov 28, 2024"
+    }
+  ];
+}
+
+let articles = loadArticles();
+let currentFilter = '';
+
+// ── RENDER CARDS ──
+function starsHTML(n) {
+  return '★'.repeat(n) + '☆'.repeat(5-n);
+}
+
+function catBadgeClass(cat) {
+  const m = { 'Electronics':'electronics','Home & Kitchen':'home','Fashion':'fashion','Beauty':'beauty','Books':'books','Household':'household' };
+  return 'badge badge-' + (m[cat] || 'other');
+}
+
+function renderCards(filter) {
+  const grid = document.getElementById('articles-grid');
+  const list = filter ? articles.filter(a => a.cat === filter) : articles;
+  document.getElementById('article-count').textContent = list.length + ' article' + (list.length !== 1 ? 's' : '');
+  document.getElementById('section-title').textContent = filter ? filter + ' Reviews' : 'Latest Reviews';
+
+  if (list.length === 0) {
+    grid.innerHTML = `<div class="empty"><div class="icon">📭</div><p>No articles in this category yet.<br>Add some from the Admin panel!</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map(a => `
+    <div class="card">
+      <div class="card-img">
+        ${a.img ? `<img src="${escHtml(a.img)}" alt="${escHtml(a.title)}" onerror="this.parentElement.innerHTML='📦'">` : '📦'}
+      </div>
+      <div class="card-body">
+        <div class="card-cat"><span class="${catBadgeClass(a.cat)}">${escHtml(a.cat)}</span></div>
+        <div class="star-rating">${starsHTML(a.rating || 5)} ${a.rating || 5}/5</div>
+        <div class="card-title">${escHtml(a.title)}</div>
+        <div class="card-excerpt">${escHtml(a.excerpt || a.body.substring(0, 100) + '…')}</div>
+        <div class="card-footer">
+          <span class="card-date">${a.date}</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-read" onclick="openModal(${a.id})">Read More</button>
+            <a class="btn-amazon" href="${escHtml(a.link)}" target="_blank" rel="noopener sponsored">🛒 Amazon</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterCat(cat) {
+  currentFilter = cat;
+  // update hero buttons
+  document.querySelectorAll('.hero-cats button').forEach(b => b.classList.remove('active'));
+  renderCards(cat);
+}
+
+// ── MODAL ──
+function openModal(id) {
+  const a = articles.find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('modal-cat').innerHTML = `<span class="${catBadgeClass(a.cat)}">${escHtml(a.cat)}</span>`;
+  document.getElementById('modal-stars').textContent = starsHTML(a.rating || 5) + ' ' + (a.rating || 5) + '/5';
+  document.getElementById('modal-title').textContent = a.title;
+  document.getElementById('modal-body').textContent = a.body;
+  document.getElementById('modal-img').innerHTML = a.img
+    ? `<img src="${escHtml(a.img)}" style="width:100%;height:100%;object-fit:cover" alt="${escHtml(a.title)}" onerror="this.parentElement.style.display='none'">`
+    : '';
+  const link = document.getElementById('modal-amazon-link');
+  link.href = a.link;
+  link.textContent = '🛒 ' + (a.btnLabel || 'Buy on Amazon ↗');
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modal')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── ADMIN ──
+function renderAdminList() {
+  const list = document.getElementById('admin-list');
+  document.getElementById('admin-count').textContent = articles.length;
+  if (articles.length === 0) {
+    list.innerHTML = `<p style="color:var(--text3);font-size:14px;text-align:center;padding:32px 0;">No articles yet.</p>`;
+    return;
+  }
+  list.innerHTML = articles.map(a => `
+    <div class="admin-article-item">
+      <div class="aai-info">
+        <div class="aai-title">${escHtml(a.title)}</div>
+        <div class="aai-cat">${escHtml(a.cat)} · ${a.date}</div>
+      </div>
+      <div class="aai-actions">
+        <button class="btn-read" onclick="openModal(${a.id})" style="font-size:12px;padding:4px 10px;">View</button>
+        <button class="btn-del" onclick="deleteArticle(${a.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addArticle() {
+  const title = document.getElementById('f-title').value.trim();
+  const cat = document.getElementById('f-cat').value;
+  const rating = parseInt(document.getElementById('f-rating').value);
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const body = document.getElementById('f-body').value.trim();
+  const img = document.getElementById('f-img').value.trim();
+  const link = document.getElementById('f-link').value.trim();
+  const btnLabel = document.getElementById('f-btn').value.trim() || 'Buy on Amazon ↗';
+
+  if (!title) { showToast('⚠️ Please enter a title'); return; }
+  if (!cat) { showToast('⚠️ Please select a category'); return; }
+  if (!body) { showToast('⚠️ Please write the article content'); return; }
+  if (!link) { showToast('⚠️ Please add your Amazon affiliate link'); return; }
+
+  const now = new Date();
+  const date = now.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+  const article = {
+    id: Date.now(), title, cat, rating, excerpt, body, img, link, btnLabel, date
+  };
+  articles.unshift(article);
+  saveArticles(articles);
+  renderCards(currentFilter);
+  renderAdminList();
+
+  // reset form
+  ['f-title','f-excerpt','f-body','f-img','f-link'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-cat').value = '';
+  document.getElementById('f-rating').value = '5';
+  document.getElementById('f-btn').value = 'Buy on Amazon ↗';
+
+  showToast('✅ Article published successfully!');
+}
+
+function deleteArticle(id) {
+  if (!confirm('Delete this article? This cannot be undone.')) return;
+  articles = articles.filter(a => a.id !== id);
+  saveArticles(articles);
+  renderCards(currentFilter);
+  renderAdminList();
+  showToast('🗑️ Article deleted');
+}
+
+// ── NAVIGATION ──
+function showSection(section) {
+  document.getElementById('home-page').style.display = section === 'home' ? 'block' : 'none';
+  document.getElementById('admin-panel').style.display = section === 'admin' ? 'block' : 'none';
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if (section === 'home') document.querySelectorAll('nav button')[0].classList.add('active');
+  if (section === 'admin') renderAdminList();
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── UTILS ──
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── INIT ──
+renderCards('');
+</script>
+</body>
+</html>
